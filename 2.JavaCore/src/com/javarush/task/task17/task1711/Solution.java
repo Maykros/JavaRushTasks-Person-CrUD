@@ -39,45 +39,60 @@ public class Solution {
 
     public static void createPeoples(String[] array) throws ParseException {
         int createCount = (array.length - 1) / 3;
-        SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-
         for (int i = 0, j = 1; i < createCount; i++, j = j + 3) {
-            if (array[j + 1].equals("м")) {
-                allPeople.add(Person.createMale(array[j], formatterSlash.parse(array[j + 2])));
-                System.out.println(i);
-            }
-            else {
-                allPeople.add(Person.createFemale(array[j], formatterSlash.parse(array[j + 2])));
-                System.out.println(i);
-            }
+            createPerson(array[j], array[j + 1], array[j + 2]);
         }
     }
+
+    public static void createPerson(String name, String sex, String birthDate) throws ParseException {
+        SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        if (sex.equals("м")) {
+            allPeople.add(Person.createMale(name, formatterSlash.parse(birthDate)));
+        }
+        else {
+            allPeople.add(Person.createFemale(name, formatterSlash.parse(birthDate)));
+        }
+    }
+
+
     public static void updatePeoples(String[] array) throws ParseException {
         int updateCount = (array.length - 1) / 3;
-        SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        Person person = null;
         for (int i = 0, j = 1; i < updateCount; i++, j = j + 4) {
-            person = allPeople.get(Integer.parseInt(array[j]));
-            person.setName(array[j + 1]);
-            person.setSex(array[j + 2].equals("м") ? Sex.MALE : Sex.FEMALE);
-            person.setBirthDate(formatterSlash.parse(array[j + 3]));
+            updatePerson(Integer.parseInt(array[j]), array[j + 1], array[j + 2], array[j + 3]);
         }
     }
+
+    public static void updatePerson(int id, String name, String sex, String birthDate) throws ParseException {
+        SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Person person = null;
+        person = allPeople.get(id);
+        person.setName(name);
+        person.setSex(sex.equals("м") ? Sex.MALE : Sex.FEMALE);
+        person.setBirthDate(formatterSlash.parse(birthDate));
+    }
+
     public static void deletePeoples(String[] array) {
         int deleteCount = array.length - 1;
         for (int i = 0, j = 1; i < deleteCount; i++, j = j + 2) {
-            allPeople.remove(Integer.parseInt(array[j]));
+            deletePerson(Integer.parseInt(array[j]));
         }
+    }
+    public static void deletePerson(int id) {
+        allPeople.remove(id);
     }
 
     public static void readPeoples(String[] array) {
         int readCount = array.length - 1;
-        SimpleDateFormat formatterHyph = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
-        Person person = null;
         for (int i = 0, j = 1; i < readCount; i++, j++) {
-            person = allPeople.get(Integer.parseInt(array[j]));
-            String sex = person.getSex().equals(Sex.MALE) ? "м" : "ж";
-            System.out.println(person.getName() + " " + sex + " " + formatterHyph.format(person.getBirthDate()));
+            readPerson(Integer.parseInt(array[j]));
         }
+    }
+
+    public static void readPerson(int id) {
+        Person person = null;
+        SimpleDateFormat formatterHyph = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        person = allPeople.get(id);
+        String sex = person.getSex().equals(Sex.MALE) ? "м" : "ж";
+        System.out.println(person.getName() + " " + sex + " " + formatterHyph.format(person.getBirthDate()));
     }
 }
