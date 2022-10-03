@@ -23,12 +23,20 @@ public class Solution {
         SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         SimpleDateFormat formatterHyph = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         Person person = null;
-        int operationCount = (args.length - 1) / 3;
+        int operationCUCount = (args.length - 1) / 3;
+        int operationRDCount = args.length - 1;
 
         switch (args[0]) {
             case "-c":
-                for (int i = 0; i < operationCount; i++) {
-                    Person.
+                for (int i = 0, j = 1; i < operationCUCount; i++, j = j + 3) {
+                    if (args[j+1].equals("м")) {
+                        allPeople.add(Person.createMale(args[j], formatterSlash.parse(args[j+2])));
+                        System.out.println(i);
+                    }
+                    else {
+                        allPeople.add(Person.createFemale(args[j], formatterSlash.parse(args[j + 2])));
+                        System.out.println(i);
+                    }
                 }
                 break;
             case "-u":
