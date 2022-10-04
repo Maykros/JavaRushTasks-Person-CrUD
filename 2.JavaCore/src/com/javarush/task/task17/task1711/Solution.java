@@ -46,17 +46,20 @@ public class Solution {
 
     public static void createPerson(String name, String sex, String birthDate) throws ParseException {
         SimpleDateFormat formatterSlash = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Person person = null;
         if (sex.equals("м")) {
-            allPeople.add(Person.createMale(name, formatterSlash.parse(birthDate)));
+            person = Person.createMale(name, formatterSlash.parse(birthDate));
         }
         else {
-            allPeople.add(Person.createFemale(name, formatterSlash.parse(birthDate)));
+            person = Person.createFemale(name, formatterSlash.parse(birthDate));
         }
+        allPeople.add(person);
+        System.out.println(allPeople.indexOf(person));
     }
 
 
     public static void updatePeoples(String[] array) throws ParseException {
-        int updateCount = (array.length - 1) / 3;
+        int updateCount = (array.length - 1) / 4;
         for (int i = 0, j = 1; i < updateCount; i++, j = j + 4) {
             updatePerson(Integer.parseInt(array[j]), array[j + 1], array[j + 2], array[j + 3]);
         }
@@ -73,12 +76,17 @@ public class Solution {
 
     public static void deletePeoples(String[] array) {
         int deleteCount = array.length - 1;
-        for (int i = 0, j = 1; i < deleteCount; i++, j = j + 2) {
+        for (int i = 0, j = 1; i < deleteCount; i++, j++) {
             deletePerson(Integer.parseInt(array[j]));
         }
     }
     public static void deletePerson(int id) {
-        allPeople.remove(id);
+        //по условию нужно логическое удаление, при обычном необходимо смещение индекса
+        Person person = null;
+        person = allPeople.get(id);
+        person.setName(null);
+        person.setSex(null);
+        person.setBirthDate(null);
     }
 
     public static void readPeoples(String[] array) {
